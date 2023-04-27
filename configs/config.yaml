@@ -1,0 +1,13 @@
+postgres:
+  host: "localhost"
+  user: "postgres"
+  password: "01300130yeo"
+  dbname: "ECommerce"
+  port: "5432"
+
+jwt:
+  secretKeyEmployee: e-commerce_secret_key_employee
+  secretKeyCustomer: e-commerce_secret_key_customer
+
+# http:
+#   port: ":8001"
