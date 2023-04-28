@@ -34,7 +34,7 @@ func main() {
 	app := gin.Default()
 
 	app.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, utils.ErrorMessage(http.StatusText((http.StatusNotFound)), 404))
+		c.JSON(http.StatusNotFound, utils.ErrorMessage("Not Found Route", 404))
 	})
 	app.NoMethod(func(c *gin.Context) {
 		c.JSON(http.StatusMethodNotAllowed, utils.ErrorMessage(http.StatusText((http.StatusMethodNotAllowed)), 405))

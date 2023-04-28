@@ -25,6 +25,3 @@ type OrderUsecase interface {
 
 	CreatePayment(req *models.Payment, customerId uint) (err error)
 }
-
-// Update Order => (Employee action)
-// (for update status, track no)

@@ -1,9 +1,11 @@
 package usecase
 
 import (
+	"e-commerce-api/constant"
 	"e-commerce-api/domains"
 	"e-commerce-api/domains/response"
 	"e-commerce-api/models"
+	"errors"
 )
 
 var err error
@@ -47,4 +49,60 @@ func (t *shopUsecase) GetShopById(shopId uint) (shop *models.ShopOwner, err erro
 func (t *shopUsecase) GetDailyReports(req response.DailyReportsRequest) (res *response.DailyReportsResponse, err error) {
 	reports, err := t.shopRepo.GetDailyReports(req)
 	return reports, err
+}
+
+func (t *shopUsecase) CreateShop(req *models.ShopOwner) (err error) {
+	if req.Name == "" {
+		return errors.New(constant.InvalidField)
+	}
+
+	var isExist bool
+	if isExist, err = t.shopRepo.CheckIsExistShopName(req.Name); err != nil {
+		if err.Error() != constant.RecordNotFound {
+			return err
+		}
+	}
+	if isExist == true {
+		return errors.New(constant.DupicateShopName)
+	}
+
+	err = t.shopRepo.CreateShop(req)
+	return err
+}
+
+func (t *shopUsecase) UpdateShop(req *models.ShopOwner) (err error) {
+	if req.Name == "" || req.ID == 0 {
+		return errors.New(constant.InvalidField)
+	}
+
+	var tempShop *models.ShopOwner
+	if tempShop, err = t.shopRepo.GetShopById(req.ID); err != nil {
+		return err
+	}
+
+	var isExist bool
+	if req.Name != tempShop.Name {
+		if isExist, err = t.shopRepo.CheckIsExistShopName(req.Name); err != nil {
+			if err.Error() != constant.RecordNotFound {
+				return err
+			}
+		}
+		if isExist == true {
+			return errors.New(constant.DupicateShopName)
+		}
+	}
+
+	tempShop.Name = req.Name
+	tempShop.Description = req.Description
+
+	err = t.shopRepo.UpdateShop(tempShop)
+	return err
+}
+
+func (t *shopUsecase) DeleteShop(shopId uint) (res uint, err error) {
+	err = t.shopRepo.DeleteShop(shopId)
+	if err != nil {
+		return 0, err
+	}
+	return shopId, nil
 }

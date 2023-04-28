@@ -12,6 +12,10 @@ type ShopRepository interface {
 	GetEmployeeByEmail(email string) (emp *models.Employee, err error)
 	GetEmployeeByUsername(username string) (emp *models.Employee, err error)
 	GetShopById(shopId uint) (shop *models.ShopOwner, err error)
+	CheckIsExistShopName(shopName string) (res bool, err error)
+	CreateShop(req *models.ShopOwner) (err error)
+	UpdateShop(req *models.ShopOwner) (err error)
+	DeleteShop(shopId uint) (err error)
 
 	GetDailyReports(req response.DailyReportsRequest) (res *response.DailyReportsResponse, err error)
 }
@@ -23,10 +27,9 @@ type ShopUsecase interface {
 	GetEmployeeByEmail(email string) (emp *models.Employee, err error)
 	GetEmployeeByUsername(username string) (emp *models.Employee, err error)
 	GetShopById(shopId uint) (shop *models.ShopOwner, err error)
+	CreateShop(req *models.ShopOwner) (err error)
+	UpdateShop(req *models.ShopOwner) (err error)
+	DeleteShop(shopId uint) (res uint, err error)
 
 	GetDailyReports(req response.DailyReportsRequest) (res *response.DailyReportsResponse, err error)
-
-	// CreateShop -> cretae employee admin
-	// UpdateShop
-	// DeleteShop
 }

@@ -131,3 +131,29 @@ func (t *shopRepository) GetDailyReports(req response.DailyReportsRequest) (res 
 
 	return reportRes, err
 }
+
+func (t *shopRepository) CheckIsExistShopName(shopName string) (res bool, err error) {
+	var amountRes int64
+	var shopOwner models.ShopOwner
+	if err := t.DB.Model(&shopOwner).Where("name = ?", shopName).Count(&amountRes).Error; err != nil {
+		return false, err
+	}
+	exists := amountRes > 0
+	return exists, nil
+}
+
+func (t *shopRepository) CreateShop(req *models.ShopOwner) (err error) {
+	err = t.DB.Create(req).Error
+	return err
+}
+
+func (t *shopRepository) UpdateShop(req *models.ShopOwner) (err error) {
+	err = t.DB.Save(req).Error
+	return err
+}
+
+func (t *shopRepository) DeleteShop(shopId uint) (err error) {
+	var shop models.ShopOwner
+	err = t.DB.Unscoped().Where("id = ?", shopId).Delete(&shop).Error
+	return err
+}

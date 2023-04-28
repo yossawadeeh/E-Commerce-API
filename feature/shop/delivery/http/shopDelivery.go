@@ -3,6 +3,7 @@ package http
 import (
 	"e-commerce-api/domains"
 	"e-commerce-api/domains/response"
+	"e-commerce-api/models"
 	"e-commerce-api/utils"
 	"net/http"
 	"strconv"
@@ -72,5 +73,57 @@ func (t *ShopHandler) GetDailyReports(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
 		Items: res,
+	}))
+}
+
+func (t *ShopHandler) CreateShop(c *gin.Context) {
+	req := models.ShopOwner{}
+	if err := c.Bind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	err = t.shopUsecase.CreateShop(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Item: req,
+	}))
+}
+
+func (t *ShopHandler) UpdateShop(c *gin.Context) {
+	req := models.ShopOwner{}
+	if err := c.Bind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	err = t.shopUsecase.UpdateShop(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Item: req,
+	}))
+}
+
+func (t *ShopHandler) DeleteShop(c *gin.Context) {
+	shopIdStr := c.Param("shopId")
+	shopId, _ := strconv.Atoi(shopIdStr)
+	var id uint
+
+	id, err = t.shopUsecase.DeleteShop(uint(shopId))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Id: id,
 	}))
 }

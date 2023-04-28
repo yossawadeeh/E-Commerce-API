@@ -5,6 +5,7 @@ const (
 	EmailDuplicate      string = "Duplicate email"
 	UsernameDuplicate   string = "Duplicate username"
 	DupicateProductName string = "Duplicate product name"
+	DupicateShopName    string = "Duplicate shop name"
 
 	// Not found
 	ShopIdNotFound    string = "Invalid ShopId"
