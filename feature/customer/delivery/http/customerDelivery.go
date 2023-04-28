@@ -6,7 +6,6 @@ import (
 	"e-commerce-api/models"
 	"e-commerce-api/utils"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,10 +45,16 @@ func (t *CustomerHandler) UpdateCarts(c *gin.Context) {
 
 func (t *CustomerHandler) DeleteProductFromCarts(c *gin.Context) {
 	customerId := c.MustGet("id").(float64)
-	productIdStr := c.Param("productId")
-	productId, _ := strconv.Atoi(productIdStr)
+	// productIdStr := c.Param("productId")
+	// productId, _ := strconv.Atoi(productIdStr)
+	var productIds response.ProductIdRequest
 
-	if err = t.customerUsecase.DeleteProductFromCarts(uint(customerId), uint(productId)); err != nil {
+	if err := c.Bind(&productIds); err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	if err = t.customerUsecase.DeleteProductFromCarts(uint(customerId), productIds); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
 		return
 	}

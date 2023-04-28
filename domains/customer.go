@@ -11,7 +11,7 @@ type CustomerRepository interface {
 	GetCustomerByEmail(email string) (cus *models.Customer, err error)
 
 	UpdateCarts(req models.Cart) (res *response.AddToCartResponse, err error)
-	DeleteProductFromCarts(customerId uint, productId uint) (err error)
+	DeleteProductFromCarts(customerId uint, req response.ProductIdRequest) (err error)
 	CreateAddress(req *models.Address) (err error)
 }
 
@@ -21,6 +21,6 @@ type CustomerUsecase interface {
 	GetCustomerByEmail(email string) (cus *models.Customer, err error)
 
 	UpdateCarts(req models.Cart) (res *response.AddToCartResponse, err error)
-	DeleteProductFromCarts(customerId uint, productId uint) (err error)
+	DeleteProductFromCarts(customerId uint, req response.ProductIdRequest) (err error)
 	CreateAddress(req *models.Address) (err error)
 }

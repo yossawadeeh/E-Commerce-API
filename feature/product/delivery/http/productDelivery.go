@@ -24,10 +24,20 @@ func NewProductHandler(usecase domains.ProductUsecase) *ProductHandler {
 }
 
 func (t *ProductHandler) GetAllProducts(c *gin.Context) {
-	shopId := c.MustGet("shop_id").(float64)
+	var products *[]models.Product
+	products, err = t.productUsecase.GetAllProducts()
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Items: products,
+	}))
+}
+
+func (t *ProductHandler) GetAllProductsByShopId(c *gin.Context) {
+	shopIdParam := c.Param("shopId")
+	shopId, _ := strconv.Atoi(shopIdParam)
 
 	var products *[]models.Product
-	products, err = t.productUsecase.GetAllProducts(uint(shopId))
+	products, err = t.productUsecase.GetAllProductsByShopId(uint(shopId))
 
 	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
 		Items: products,
@@ -107,5 +117,31 @@ func (t *ProductHandler) DeleteProduct(c *gin.Context) {
 
 	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
 		Id: id,
+	}))
+}
+
+func (t *ProductHandler) FilterProductByCategoryId(c *gin.Context) {
+	categoryIdParam := c.Param("categoryId")
+	categoryId, _ := strconv.Atoi(categoryIdParam)
+
+	var products *[]models.Product
+	products, err = t.productUsecase.FilterProductByCategoryId(uint(categoryId))
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Items: products,
+	}))
+}
+
+func (t *ProductHandler) FilterProductByCategoryIdAndShopId(c *gin.Context) {
+	categoryIdParam := c.Param("categoryId")
+	categoryId, _ := strconv.Atoi(categoryIdParam)
+	shopIdParam := c.Param("shopId")
+	shopId, _ := strconv.Atoi(shopIdParam)
+
+	var products *[]models.Product
+	products, err = t.productUsecase.FilterProductByCategoryIdAndShopId(uint(categoryId), uint(shopId))
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Items: products,
 	}))
 }

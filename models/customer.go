@@ -10,7 +10,7 @@ type Customer struct {
 	ID           uint           `gorm:"primaryKey" json:"id"`
 	Username     string         `gorm:"not null" json:"username"`
 	Email        string         `gorm:"not null" json:"email"`
-	Password     string         `gorm:"not null"`
+	Password     string         `gorm:"not null" json:"-"`
 	FirstName    string         `json:"firstname"`
 	LastName     string         `json:"lastname"`
 	Age          *int64         `json:"age"`

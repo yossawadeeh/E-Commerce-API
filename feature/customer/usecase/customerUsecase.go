@@ -54,11 +54,11 @@ func (t *customerUsecase) UpdateCarts(req models.Cart) (res *response.AddToCartR
 	return prodToCart, err
 }
 
-func (t *customerUsecase) DeleteProductFromCarts(customerId uint, productId uint) (err error) {
-	if _, err := t.productRepo.GetProductById(productId); err != nil {
-		return errors.New(constant.ProductIdNotFound)
-	}
-	err = t.customerRepo.DeleteProductFromCarts(customerId, productId)
+func (t *customerUsecase) DeleteProductFromCarts(customerId uint, req response.ProductIdRequest) (err error) {
+	// if _, err := t.productRepo.GetProductById(productId); err != nil {
+	// 	return errors.New(constant.ProductIdNotFound)
+	// }
+	err = t.customerRepo.DeleteProductFromCarts(customerId, req)
 	return err
 }
 

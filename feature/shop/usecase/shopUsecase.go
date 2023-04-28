@@ -43,3 +43,8 @@ func (t *shopUsecase) GetShopById(shopId uint) (shop *models.ShopOwner, err erro
 	res, err := t.shopRepo.GetShopById(shopId)
 	return res, err
 }
+
+func (t *shopUsecase) GetDailyReports(req response.DailyReportsRequest) (res *response.DailyReportsResponse, err error) {
+	reports, err := t.shopRepo.GetDailyReports(req)
+	return reports, err
+}

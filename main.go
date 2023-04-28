@@ -64,6 +64,8 @@ func main() {
 	routes.ShopRoute(v1)
 	routes.AuthUserRoute(v1)
 	routes.CustomerRoute(v1)
+	routes.OrderRoute(v1)
+	routes.ProductRoute(v1)
 
 	app.Run(":8001")
 }

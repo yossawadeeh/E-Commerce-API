@@ -12,6 +12,8 @@ type ShopRepository interface {
 	GetEmployeeByEmail(email string) (emp *models.Employee, err error)
 	GetEmployeeByUsername(username string) (emp *models.Employee, err error)
 	GetShopById(shopId uint) (shop *models.ShopOwner, err error)
+
+	GetDailyReports(req response.DailyReportsRequest) (res *response.DailyReportsResponse, err error)
 }
 
 // Usecase
@@ -21,6 +23,8 @@ type ShopUsecase interface {
 	GetEmployeeByEmail(email string) (emp *models.Employee, err error)
 	GetEmployeeByUsername(username string) (emp *models.Employee, err error)
 	GetShopById(shopId uint) (shop *models.ShopOwner, err error)
+
+	GetDailyReports(req response.DailyReportsRequest) (res *response.DailyReportsResponse, err error)
 
 	// CreateShop -> cretae employee admin
 	// UpdateShop

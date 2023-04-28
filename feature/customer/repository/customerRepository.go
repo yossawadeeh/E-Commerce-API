@@ -54,8 +54,8 @@ func (t *customerRepository) UpdateCarts(req models.Cart) (res *response.AddToCa
 	return prodToCart, err
 }
 
-func (t *customerRepository) DeleteProductFromCarts(customerId uint, productId uint) (err error) {
-	err = t.DB.Where("customer_id = ? and product_id = ?", customerId, productId).Delete(&models.Cart{}).Error
+func (t *customerRepository) DeleteProductFromCarts(customerId uint, req response.ProductIdRequest) (err error) {
+	err = t.DB.Where("product_id IN (?) AND customer_id = ?", req.ProductIds, customerId).Delete(&models.Cart{}).Error
 	return err
 }
 

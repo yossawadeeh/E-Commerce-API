@@ -9,11 +9,14 @@ const (
 	// Not found
 	ShopIdNotFound    string = "Invalid ShopId"
 	ProductIdNotFound string = "Invalid ProductId"
+	RecordNotFound    string = "record not found"
 
-	// Field
+	// Auth field
 	InvalidField string = "Invalid field"
 	LoginFailed  string = "Incorrect email or password"
 
-	// Product
+	// Invalid
 	ProductNotEnough string = "Products in stock are not enough."
+	PaymentInvalid   string = "Invalid payment amount."
+	PaymentPaid      string = "Payment already paid."
 )

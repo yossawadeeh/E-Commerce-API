@@ -16,8 +16,6 @@ import (
 
 func ShopRoute(v1 *gin.RouterGroup) {
 
-	shopRoute := v1.Group("/shop", middleware.JWTAuthenEmployee())
-
 	newShopRepository := shopRepository.NewShopRepository(database.DB)
 	newShopUsecase := shopUsecase.NewShopUsecase(newShopRepository)
 	newShopHandler := shopHandler.NewShopHandler(newShopUsecase)
@@ -26,12 +24,17 @@ func ShopRoute(v1 *gin.RouterGroup) {
 	newProductUsecase := productUsecase.NewProductUsecase(newProductRepository)
 	newProductHandler := productHandler.NewProductHandler(newProductUsecase)
 
+	shopRoute := v1.Group("/shop", middleware.JWTAuthenEmployee())
+
 	shopRoute.GET("/roles", newShopHandler.GetAllRoles)
 	shopRoute.GET("/employee/:empId", newShopHandler.GetEmployeeProfile)
 
-	shopRoute.GET("/products", newProductHandler.GetAllProducts)
-	shopRoute.GET("/product/:productId", newProductHandler.GetProductById)
 	shopRoute.POST("/product", newProductHandler.CreateProduct)
 	shopRoute.PUT("/product", newProductHandler.UpdateProduct)
 	shopRoute.DELETE("/product/:productId", newProductHandler.DeleteProduct)
+
+	reportsRoute := v1.Group("/reports", middleware.JWTAuthenEmployee())
+
+	reportsRoute.GET("/daily", newShopHandler.GetDailyReports)
+
 }

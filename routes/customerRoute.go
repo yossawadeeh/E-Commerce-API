@@ -23,7 +23,7 @@ func CustomerRoute(v1 *gin.RouterGroup) {
 	// Carts route
 	authUserRoute := v1.Group("/carts", middleware.JWTAuthenCustomer())
 	authUserRoute.POST("/", customerUserHandler.UpdateCarts)
-	authUserRoute.DELETE("/:productId", customerUserHandler.DeleteProductFromCarts)
+	authUserRoute.DELETE("/", customerUserHandler.DeleteProductFromCarts)
 
 	// Customer route
 	customerRoute := v1.Group("/customer", middleware.JWTAuthenCustomer())

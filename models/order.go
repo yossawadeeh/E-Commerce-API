@@ -16,18 +16,19 @@ type OrderStatus struct {
 }
 
 type Order struct {
-	ID        uint           `gorm:"primaryKey" json:"id"`
-	OrderDate time.Time      `gorm:"not null" json:"order_date"`
-	TrackNo   *string        `json:"track_no"`
-	CreatedAt time.Time      `gorm:"default:now()" json:"createdAt"`
-	UpdatedAt time.Time      `gorm:"default:now()" json:"updatedAt"`
-	DeletedAt gorm.DeletedAt `json:"-"`
+	ID         uint           `gorm:"primaryKey" json:"id"`
+	OrderDate  time.Time      `gorm:"not null; default:now()" json:"order_date"`
+	TotalPrice float64        `json:"total_price"`
+	TrackNo    *string        `json:"track_no"`
+	CreatedAt  time.Time      `gorm:"default:now()" json:"createdAt"`
+	UpdatedAt  time.Time      `gorm:"default:now()" json:"updatedAt"`
+	DeletedAt  gorm.DeletedAt `json:"-"`
 
 	CustomerId uint      `json:"customer_id"`
 	Customer   *Customer `gorm:"foreignKey:CustomerId; not null" json:"customer"`
 
-	ShipperId uint      `json:"shipper_id"`
-	Shipper   *Customer `gorm:"foreignKey:ShipperId; not null" json:"shipper"`
+	ShipperId uint     `json:"shipper_id"`
+	Shipper   *Shipper `gorm:"foreignKey:ShipperId; not null" json:"shipper"`
 
 	OrderStatusId uint         `json:"order_status_id"`
 	OrderStatus   *OrderStatus `gorm:"foreignKey:OrderStatusId; not null" json:"order_status"`

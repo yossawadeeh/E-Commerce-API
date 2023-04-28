@@ -23,7 +23,15 @@ func (t *productRepository) GetProductCategoryById(productCatId uint) (productCa
 	return productCatRes, err
 }
 
-func (t *productRepository) GetAllProducts(shopId uint) (products *[]models.Product, err error) {
+func (t *productRepository) GetAllProducts() (products *[]models.Product, err error) {
+	var productsRes *[]models.Product
+	if err := t.DB.Find(&productsRes).Error; err != nil {
+		return nil, err
+	}
+	return productsRes, err
+}
+
+func (t *productRepository) GetAllProductsByShopId(shopId uint) (products *[]models.Product, err error) {
 	var productsRes *[]models.Product
 	if err := t.DB.Where("shop_owner_id = ?", shopId).Find(&productsRes).Error; err != nil {
 		return nil, err
@@ -62,4 +70,20 @@ func (t *productRepository) UpdateProduct(product *models.Product) (err error) {
 func (t *productRepository) DeleteProduct(product *models.Product) (deletedId uint, err error) {
 	err = t.DB.Delete(&product).Error
 	return product.ID, err
+}
+
+func (t *productRepository) FilterProductByCategoryId(categoryId uint) (res *[]models.Product, err error) {
+	var products *[]models.Product
+	if err := t.DB.Where("product_category_id = ?", categoryId).Find(&products).Error; err != nil {
+		return nil, err
+	}
+	return products, err
+}
+
+func (t *productRepository) FilterProductByCategoryIdAndShopId(categoryId uint, shopId uint) (res *[]models.Product, err error) {
+	var products *[]models.Product
+	if err := t.DB.Where("product_category_id = ? and shop_owner_id = ?", categoryId, shopId).Find(&products).Error; err != nil {
+		return nil, err
+	}
+	return products, err
 }

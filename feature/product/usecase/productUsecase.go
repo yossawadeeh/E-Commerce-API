@@ -18,8 +18,13 @@ func NewProductUsecase(repo domains.ProductRepository) domains.ProductUsecase {
 	}
 }
 
-func (t *productUsecase) GetAllProducts(shopId uint) (products *[]models.Product, err error) {
-	res, err := t.productUsecase.GetAllProducts(shopId)
+func (t *productUsecase) GetAllProducts() (products *[]models.Product, err error) {
+	res, err := t.productUsecase.GetAllProducts()
+	return res, err
+}
+
+func (t *productUsecase) GetAllProductsByShopId(shopId uint) (products *[]models.Product, err error) {
+	res, err := t.productUsecase.GetAllProductsByShopId(shopId)
 	return res, err
 }
 
@@ -70,4 +75,14 @@ func (t *productUsecase) DeleteProduct(shopId uint, productId uint) (deletedId u
 		return id, err
 	}
 	return id, nil
+}
+
+func (t *productUsecase) FilterProductByCategoryId(categoryId uint) (products *[]models.Product, err error) {
+	res, err := t.productUsecase.FilterProductByCategoryId(categoryId)
+	return res, err
+}
+
+func (t *productUsecase) FilterProductByCategoryIdAndShopId(categoryId uint, shopId uint) (products *[]models.Product, err error) {
+	res, err := t.productUsecase.FilterProductByCategoryIdAndShopId(categoryId, shopId)
+	return res, err
 }
