@@ -33,6 +33,7 @@ func ShopRoute(v1 *gin.RouterGroup) {
 
 	reportsRoute := v1.Group("/reports", middleware.JWTAuthenEmployee())
 	reportsRoute.GET("/daily", newShopHandler.GetDailyReports)
+	reportsRoute.GET("/periodDate", newShopHandler.GetOrderReportsPeriodDate)
 
 	newShopRoute := v1.Group("/newShop")
 	newShopRoute.POST("/", newShopHandler.CreateShop)

@@ -7,7 +7,6 @@ import (
 	"e-commerce-api/models"
 	"e-commerce-api/utils"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -123,14 +122,10 @@ func (t *authUserUsecase) CustomerLogin(loginData response.LoginCustomerRequest)
 		return nil, errors.New(constant.LoginFailed)
 	}
 
-	fmt.Println("ggg ", cusData)
-
 	err = bcrypt.CompareHashAndPassword([]byte(cusData.Password), []byte(loginData.Password))
 	if err != nil {
 		return nil, errors.New(constant.LoginFailed)
 	}
-
-	fmt.Println("ggsssssg ", cusData.ID)
 
 	var hmacSampleSecret []byte
 	hmacSampleSecret = []byte(utils.ViperGetString("jwt.secretKeyCustomer"))

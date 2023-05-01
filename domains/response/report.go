@@ -10,6 +10,14 @@ type DailyReportsRequest struct {
 	ShopId   uint      `json:"shopId"`
 }
 
+type OrderReportsPeriodDateRequest struct {
+	StartDate     time.Time `json:"startdate"`
+	StartDateText string    `json:"startdate_text"`
+	EndDate       time.Time `json:"enddate"`
+	EndDateText   string    `json:"enddate_text"`
+	ShopId        uint      `json:"shopId"`
+}
+
 type CategoryTotalSales struct {
 	CategoryId   uint    `json:"category_id"`
 	CategoryName string  `json:"category_name"`
@@ -28,6 +36,8 @@ type ProductTotalSales struct {
 
 type DailyReportsResponse struct {
 	Date            time.Time            `json:"date"`
+	StartDate       time.Time            `json:"startdate"`
+	EndDate         time.Time            `json:"enddate"`
 	TotalSalesPrice float64              `json:"total_sales_price"`
 	Categories      []CategoryTotalSales `json:"categories"`
 	Products        []ProductTotalSales  `json:"products"`

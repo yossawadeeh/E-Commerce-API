@@ -76,6 +76,34 @@ func (t *ShopHandler) GetDailyReports(c *gin.Context) {
 	}))
 }
 
+func (t *ShopHandler) GetOrderReportsPeriodDate(c *gin.Context) {
+	shop_id := c.MustGet("shop_id").(float64)
+
+	var req response.OrderReportsPeriodDateRequest
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	req.StartDate, err = time.Parse("2006-01-02T15:04:05.000Z", req.StartDateText)
+	req.EndDate, err = time.Parse("2006-01-02T15:04:05.000Z", req.EndDateText)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	var res *response.DailyReportsResponse
+	req.ShopId = uint(shop_id)
+	res, err := t.shopUsecase.GetOrderReportsPeriodDate(req)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, utils.ErrorMessage(err.Error(), http.StatusNotFound))
+		return
+	}
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Items: res,
+	}))
+}
+
 func (t *ShopHandler) CreateShop(c *gin.Context) {
 	req := models.ShopOwner{}
 	if err := c.Bind(&req); err != nil {

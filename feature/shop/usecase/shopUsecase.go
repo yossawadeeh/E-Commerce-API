@@ -51,6 +51,11 @@ func (t *shopUsecase) GetDailyReports(req response.DailyReportsRequest) (res *re
 	return reports, err
 }
 
+func (t *shopUsecase) GetOrderReportsPeriodDate(req response.OrderReportsPeriodDateRequest) (res *response.DailyReportsResponse, err error) {
+	reports, err := t.shopRepo.GetOrderReportsPeriodDate(req)
+	return reports, err
+}
+
 func (t *shopUsecase) CreateShop(req *models.ShopOwner) (err error) {
 	if req.Name == "" {
 		return errors.New(constant.InvalidField)
