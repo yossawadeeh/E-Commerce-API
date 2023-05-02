@@ -13,7 +13,7 @@ postgres:
   # port: "5432"
 
 jwt:
-  secretKeyEmployee: e-commerce_secret_key_employee1
+  secretKeyEmployee: e-commerce_secret_key_employee
   secretKeyCustomer: e-commerce_secret_key_customer
 
 # http:
