@@ -1,6 +1,7 @@
 package http
 
 import (
+	"e-commerce-api/constant"
 	"e-commerce-api/domains"
 	"e-commerce-api/domains/response"
 	"e-commerce-api/models"
@@ -111,6 +112,11 @@ func (t *ShopHandler) CreateShop(c *gin.Context) {
 		return
 	}
 
+	if req.Name == "" {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
+		return
+	}
+
 	err = t.shopUsecase.CreateShop(&req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
@@ -126,6 +132,11 @@ func (t *ShopHandler) UpdateShop(c *gin.Context) {
 	req := models.ShopOwner{}
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	if req.Name == "" || req.ID == 0 {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
 		return
 	}
 

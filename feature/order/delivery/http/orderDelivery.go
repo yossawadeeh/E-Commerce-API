@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	"e-commerce-api/constant"
 	"e-commerce-api/domains"
 	"e-commerce-api/domains/response"
 	"e-commerce-api/models"
@@ -32,6 +33,11 @@ func (t *OrderHandler) CreateOrder(c *gin.Context) {
 		return
 	}
 
+	if req.Order.AddressId == 0 || req.Order.ShipperId == 0 {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
+		return
+	}
+
 	req.Order.CustomerId = uint(cutomerId)
 	if err := t.orderUsecase.CreateOrder(req); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
@@ -59,6 +65,22 @@ func (t *OrderHandler) GetOrderCustomerById(c *gin.Context) {
 	}))
 }
 
+func (t *OrderHandler) GetOrderCustomerByIdResponse(c *gin.Context) {
+	cutomerId := c.MustGet("id").(float64)
+	orderIdStr := c.Param("orderId")
+	orderId, _ := strconv.Atoi(orderIdStr)
+
+	var orderResponse *response.OrderResponse
+	if orderResponse, err = t.orderUsecase.GetOrderCustomerByIdResponse(uint(orderId), uint(cutomerId)); err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Item: orderResponse,
+	}))
+}
+
 func (t *OrderHandler) GetOrderById(c *gin.Context) {
 	orderIdStr := c.Param("orderId")
 	orderId, _ := strconv.Atoi(orderIdStr)
@@ -71,6 +93,21 @@ func (t *OrderHandler) GetOrderById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
 		Item: order,
+	}))
+}
+
+func (t *OrderHandler) GetOrderByIdResponse(c *gin.Context) {
+	orderIdStr := c.Param("orderId")
+	orderId, _ := strconv.Atoi(orderIdStr)
+
+	var orderResponse *response.OrderResponse
+	if orderResponse, err = t.orderUsecase.GetOrderByIdResponse(uint(orderId)); err != nil {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.SuccessMessage(utils.DataObject{
+		Item: orderResponse,
 	}))
 }
 
@@ -97,6 +134,11 @@ func (t *OrderHandler) CreatePayment(c *gin.Context) {
 		return
 	}
 
+	if req.OrderId == 0 || req.PaymentTypeId == 0 || req.PaymentAmount == 0 {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
+		return
+	}
+
 	if err := t.orderUsecase.CreatePayment(req, uint(cutomerId)); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
 		return
@@ -111,6 +153,11 @@ func (t *OrderHandler) UpdateOrder(c *gin.Context) {
 	var req response.UpdateOrderRequest
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	if req.OrderId == 0 || req.ShipperId == 0 || req.OrderStatusId == 0 || req.AddressId == 0 {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
 		return
 	}
 

@@ -57,10 +57,6 @@ func (t *shopUsecase) GetOrderReportsPeriodDate(req response.OrderReportsPeriodD
 }
 
 func (t *shopUsecase) CreateShop(req *models.ShopOwner) (err error) {
-	if req.Name == "" {
-		return errors.New(constant.InvalidField)
-	}
-
 	var isExist bool
 	if isExist, err = t.shopRepo.CheckIsExistShopName(req.Name); err != nil {
 		if err.Error() != constant.RecordNotFound {
@@ -76,10 +72,6 @@ func (t *shopUsecase) CreateShop(req *models.ShopOwner) (err error) {
 }
 
 func (t *shopUsecase) UpdateShop(req *models.ShopOwner) (err error) {
-	if req.Name == "" || req.ID == 0 {
-		return errors.New(constant.InvalidField)
-	}
-
 	var tempShop *models.ShopOwner
 	if tempShop, err = t.shopRepo.GetShopById(req.ID); err != nil {
 		return err

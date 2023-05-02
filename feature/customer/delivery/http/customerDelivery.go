@@ -1,6 +1,7 @@
 package http
 
 import (
+	"e-commerce-api/constant"
 	"e-commerce-api/domains"
 	"e-commerce-api/domains/response"
 	"e-commerce-api/models"
@@ -70,6 +71,11 @@ func (t *CustomerHandler) CreateAddress(c *gin.Context) {
 	var req models.Address
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
+		return
+	}
+
+	if req.AddressDetail == "" || req.Districts == "" || req.Province == "" || req.Country == "" || req.PostalCode == "" {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
 		return
 	}
 

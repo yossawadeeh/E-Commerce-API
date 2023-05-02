@@ -31,6 +31,11 @@ func (t *AuthUserHandler) RegisterEmployee(c *gin.Context) {
 		return
 	}
 
+	if employeeReq.Username == "" || employeeReq.Email == "" || employeeReq.Password == "" || employeeReq.ShopOwnerId <= 0 {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
+		return
+	}
+
 	var res *response.EmployeeProfileResponse
 	if res, err = t.authUserUsecase.CreateEmployee(&employeeReq); err != nil {
 		switch err.Error() {
@@ -65,6 +70,11 @@ func (t *AuthUserHandler) LoginEmployee(c *gin.Context) {
 		return
 	}
 
+	if loginData.Email == "" || loginData.Password == "" {
+		c.JSON(http.StatusUnauthorized, utils.ErrorMessage(constant.InvalidField, http.StatusUnauthorized))
+		return
+	}
+
 	token, err := t.authUserUsecase.EmployeeLogin(loginData)
 	if err != nil {
 		switch err.Error() {
@@ -91,6 +101,12 @@ func (t *AuthUserHandler) RegisterCustomer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
 		return
 	}
+
+	if customerReq.Username == "" || customerReq.Email == "" || customerReq.Password == "" {
+		c.JSON(http.StatusBadRequest, utils.ErrorMessage(constant.InvalidField, http.StatusBadRequest))
+		return
+	}
+
 	customerReq.Birthday, _ = time.Parse("2006-01-02", customerReq.BirthdayText)
 	var res *response.CustomerProfileResponse
 	if res, err = t.authUserUsecase.CreateCustomer(customerReq); err != nil {
@@ -123,6 +139,11 @@ func (t *AuthUserHandler) LoginCustomer(c *gin.Context) {
 	loginData := response.LoginCustomerRequest{}
 	if err := c.Bind(&loginData); err != nil {
 		c.JSON(http.StatusUnauthorized, utils.ErrorMessage(constant.LoginFailed, http.StatusUnauthorized))
+		return
+	}
+
+	if loginData.Email == "" || loginData.Password == "" {
+		c.JSON(http.StatusUnauthorized, utils.ErrorMessage(constant.InvalidField, http.StatusUnauthorized))
 		return
 	}
 

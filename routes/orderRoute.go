@@ -21,13 +21,15 @@ func OrderRoute(v1 *gin.RouterGroup) {
 
 	orderRoute := v1.Group("/orders", middleware.JWTAuthenCustomer())
 	orderRoute.POST("/", orderHandler.CreateOrder)
-	orderRoute.GET("/:orderId", orderHandler.GetOrderCustomerById)
+	//orderRoute.GET("/:orderId", orderHandler.GetOrderCustomerById)
+	orderRoute.GET("/:orderId", orderHandler.GetOrderCustomerByIdResponse)
 	orderRoute.GET("/", orderHandler.GetAllCustomerOrders)
 
 	paymentRoute := v1.Group("/payments", middleware.JWTAuthenCustomer())
 	paymentRoute.POST("/", orderHandler.CreatePayment)
 
 	orderShopRoute := v1.Group("shop/orders", middleware.JWTAuthenEmployee())
-	orderShopRoute.GET("/:orderId", orderHandler.GetOrderById)
+	//orderShopRoute.GET("/:orderId", orderHandler.GetOrderById)
+	orderShopRoute.GET("/:orderId", orderHandler.GetOrderByIdResponse)
 	orderShopRoute.PUT("/", orderHandler.UpdateOrder)
 }

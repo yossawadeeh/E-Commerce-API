@@ -8,7 +8,9 @@ import (
 type OrderRepository interface {
 	CreateOrder(req *response.OrderRequest) (err error)
 	GetOrderCustomerById(orderId uint, customerId uint) (res *models.Order, err error)
+	GetOrderCustomerByIdResponse(orderId uint, customerId uint) (res *response.OrderResponse, err error)
 	GetOrderById(orderId uint) (res *models.Order, err error)
+	GetOrderByIdResponse(orderId uint) (res *response.OrderResponse, err error)
 	GetAllCustomerOrders(customerId uint) (res *[]models.Order, err error)
 	UpdateOrder(req *models.Order) (err error)
 
@@ -19,7 +21,9 @@ type OrderRepository interface {
 type OrderUsecase interface {
 	CreateOrder(req *response.OrderRequest) (err error)
 	GetOrderCustomerById(orderId uint, customerId uint) (res *models.Order, err error)
+	GetOrderCustomerByIdResponse(orderId uint, customerId uint) (res *response.OrderResponse, err error)
 	GetOrderById(orderId uint) (res *models.Order, err error)
+	GetOrderByIdResponse(orderId uint) (res *response.OrderResponse, err error)
 	GetAllCustomerOrders(customerId uint) (res *[]models.Order, err error)
 	UpdateOrder(req response.UpdateOrderRequest) (res *models.Order, err error)
 

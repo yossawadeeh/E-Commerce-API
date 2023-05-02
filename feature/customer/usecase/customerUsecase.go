@@ -63,10 +63,6 @@ func (t *customerUsecase) DeleteProductFromCarts(customerId uint, req response.P
 }
 
 func (t *customerUsecase) CreateAddress(req *models.Address) (err error) {
-	if req.AddressDetail == "" || req.Districts == "" || req.Province == "" || req.Country == "" || req.PostalCode == "" {
-		return errors.New(constant.InvalidField)
-	}
-
 	if err := t.customerRepo.CreateAddress(req); err != nil {
 		return err
 	}

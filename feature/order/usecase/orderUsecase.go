@@ -24,10 +24,6 @@ func NewCustomerUsecase(orderRepo domains.OrderRepository, productRepo domains.P
 }
 
 func (t *orderUsecase) CreateOrder(req *response.OrderRequest) (err error) {
-	if req.Order.AddressId == 0 || req.Order.ShipperId == 0 {
-		return errors.New(constant.InvalidField)
-	}
-
 	var totalPrice float64
 	for index, orderDetail := range req.OrderDetails {
 		if orderDetail.ProductId == 0 {
@@ -68,10 +64,22 @@ func (t *orderUsecase) GetOrderCustomerById(orderId uint, customerId uint) (res 
 	return order, err
 }
 
+func (t *orderUsecase) GetOrderCustomerByIdResponse(orderId uint, customerId uint) (res *response.OrderResponse, err error) {
+	var response *response.OrderResponse
+	response, err = t.orderRepo.GetOrderCustomerByIdResponse(orderId, customerId)
+	return response, err
+}
+
 func (t *orderUsecase) GetOrderById(orderId uint) (res *models.Order, err error) {
 	var order *models.Order
 	order, err = t.orderRepo.GetOrderById(orderId)
 	return order, err
+}
+
+func (t *orderUsecase) GetOrderByIdResponse(orderId uint) (res *response.OrderResponse, err error) {
+	var response *response.OrderResponse
+	response, err = t.orderRepo.GetOrderByIdResponse(orderId)
+	return response, err
 }
 
 func (t *orderUsecase) GetAllCustomerOrders(customerId uint) (res *[]models.Order, err error) {
@@ -81,10 +89,6 @@ func (t *orderUsecase) GetAllCustomerOrders(customerId uint) (res *[]models.Orde
 }
 
 func (t *orderUsecase) CreatePayment(req *models.Payment, customerId uint) (err error) {
-	if req.OrderId == 0 || req.PaymentTypeId == 0 || req.PaymentAmount == 0 {
-		return errors.New(constant.InvalidField)
-	}
-
 	var order *models.Order
 	if order, err = t.orderRepo.GetOrderCustomerById(req.OrderId, customerId); err != nil {
 		return err
@@ -117,10 +121,6 @@ func (t *orderUsecase) CreatePayment(req *models.Payment, customerId uint) (err 
 }
 
 func (t *orderUsecase) UpdateOrder(req response.UpdateOrderRequest) (res *models.Order, err error) {
-	if req.OrderId == 0 || req.ShipperId == 0 || req.OrderStatusId == 0 || req.AddressId == 0 {
-		return nil, errors.New(constant.InvalidField)
-	}
-
 	var order *models.Order
 	if order, err = t.orderRepo.GetOrderById(req.OrderId); err != nil {
 		return nil, err

@@ -30,11 +30,6 @@ func NewAuthUserUsecase(authRepo domains.AuthUserRepository, shopRepo domains.Sh
 }
 
 func (t *authUserUsecase) CreateEmployee(req *models.Employee) (res *response.EmployeeProfileResponse, err error) {
-
-	if req.Username == "" || req.Email == "" || req.Password == "" || req.ShopOwnerId <= 0 {
-		return nil, errors.New(constant.InvalidField)
-	}
-
 	emailIsExist, err := t.authUserRepo.CheckEmailEmployeeIsExist(req.Email)
 	if emailIsExist == true {
 		return nil, errors.New(constant.EmailDuplicate)
@@ -60,10 +55,6 @@ func (t *authUserUsecase) CreateEmployee(req *models.Employee) (res *response.Em
 }
 
 func (t authUserUsecase) EmployeeLogin(loginData response.LoginEmployeeRequest) (empToken *string, err error) {
-
-	if loginData.Email == "" || loginData.Password == "" {
-		return nil, errors.New(constant.InvalidField)
-	}
 	var empData *models.Employee
 	if empData, err = t.shopRepo.GetEmployeeByEmail(loginData.Email); err != nil {
 		return nil, errors.New(constant.LoginFailed)
@@ -88,11 +79,6 @@ func (t authUserUsecase) EmployeeLogin(loginData response.LoginEmployeeRequest) 
 }
 
 func (t *authUserUsecase) CreateCustomer(req models.Customer) (res *response.CustomerProfileResponse, err error) {
-
-	if req.Username == "" || req.Email == "" || req.Password == "" {
-		return nil, errors.New(constant.InvalidField)
-	}
-
 	emailIsExist, err := t.authUserRepo.CheckEmailCustomerIsExist(req.Email)
 	if emailIsExist == true {
 		return nil, errors.New(constant.EmailDuplicate)
@@ -113,10 +99,6 @@ func (t *authUserUsecase) CreateCustomer(req models.Customer) (res *response.Cus
 }
 
 func (t *authUserUsecase) CustomerLogin(loginData response.LoginCustomerRequest) (cusToken *string, err error) {
-
-	if loginData.Email == "" || loginData.Password == "" {
-		return nil, errors.New(constant.InvalidField)
-	}
 	var cusData *models.Customer
 	if cusData, err = t.customerRepo.GetCustomerByEmail(loginData.Email); err != nil {
 		return nil, errors.New(constant.LoginFailed)

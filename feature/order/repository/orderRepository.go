@@ -45,10 +45,50 @@ func (t *orderRepository) GetOrderCustomerById(orderId uint, customerId uint) (r
 	return order, err
 }
 
+func (t *orderRepository) GetOrderCustomerByIdResponse(orderId uint, customerId uint) (res *response.OrderResponse, err error) {
+	order := models.Order{}
+	orderDetail := []models.OrderDetail{}
+	response := &response.OrderResponse{}
+
+	err = t.DB.Preload("Customer", "id = ?", customerId).Preload("Address").Preload("OrderStatus").Preload("Shipper").Where("id = ?", orderId).First(&order).Error
+	if err != nil {
+		return nil, err
+	}
+	response.Order = order
+
+	err = t.DB.Preload("Product").Where("order_id = ?", orderId).Find(&orderDetail).Error
+	if err != nil {
+		return nil, err
+	}
+	response.OrderDetails = orderDetail
+
+	return response, err
+}
+
 func (t *orderRepository) GetOrderById(orderId uint) (res *models.Order, err error) {
 	var order *models.Order
 	err = t.DB.Preload("Customer").Preload("Address").Preload("OrderStatus").Preload("Shipper").Where("id = ?", orderId).First(&order).Error
 	return order, err
+}
+
+func (t *orderRepository) GetOrderByIdResponse(orderId uint) (res *response.OrderResponse, err error) {
+	order := models.Order{}
+	orderDetail := []models.OrderDetail{}
+	response := &response.OrderResponse{}
+
+	err = t.DB.Preload("Customer").Preload("Address").Preload("OrderStatus").Preload("Shipper").Where("id = ?", orderId).First(&order).Error
+	if err != nil {
+		return nil, err
+	}
+	response.Order = order
+
+	err = t.DB.Preload("Product").Where("order_id = ?", orderId).Find(&orderDetail).Error
+	if err != nil {
+		return nil, err
+	}
+	response.OrderDetails = orderDetail
+
+	return response, err
 }
 
 func (t *orderRepository) GetAllCustomerOrders(customerId uint) (res *[]models.Order, err error) {
