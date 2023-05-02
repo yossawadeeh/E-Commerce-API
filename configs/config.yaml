@@ -5,6 +5,13 @@ postgres:
   dbname: "ECommerce"
   port: "5432"
 
+  # # docker config
+  # host: "postgresdb_5432"
+  # user: "postgres"
+  # password: "01300130yeo"
+  # dbname: "ECommerce"
+  # port: "5432"
+
 jwt:
   secretKeyEmployee: e-commerce_secret_key_employee1
   secretKeyCustomer: e-commerce_secret_key_customer

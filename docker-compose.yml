@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  e-commerce-api:
+    build: .
+    ports:
+      - "8002:8001"
+    networks:
+      - e-commerce-networks
+    depends_on:
+      - db
+  db:
+    container_name: postgresdb_5432
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_HOST: postgresdb_5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 01300130yeo
+      POSTGRES_DB: ECommerce
+    ports:
+      - "5432:5432"
+    networks:
+      - e-commerce-networks
+  pgadmin:
+    container_name: pgadmin4_8080
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: yeolowbatt@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 01300130yeo
+    ports:
+      - "8080:80"
+    networks:
+      - e-commerce-networks
+
+networks:
+  e-commerce-networks:
