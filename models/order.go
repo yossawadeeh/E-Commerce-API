@@ -19,7 +19,7 @@ type Order struct {
 	ID         uint           `gorm:"primaryKey" json:"id"`
 	OrderDate  time.Time      `gorm:"not null; default:now()" json:"order_date"`
 	TotalPrice float64        `json:"total_price"`
-	TrackNo    *string        `json:"track_no"`
+	TrackNo    *string        `json:"track_no,omitempty"`
 	CreatedAt  time.Time      `gorm:"default:now()" json:"createdAt"`
 	UpdatedAt  time.Time      `gorm:"default:now()" json:"updatedAt"`
 	DeletedAt  gorm.DeletedAt `json:"-"`
@@ -49,5 +49,5 @@ type OrderDetail struct {
 	Product   *Product `gorm:"foreignKey:ProductId; not null" json:"product"`
 
 	OrderId uint   `json:"order_id"`
-	Order   *Order `gorm:"foreignKey:OrderId; not null" json:"order"`
+	Order   *Order `gorm:"foreignKey:OrderId; not null" json:"order,omitempty"`
 }
