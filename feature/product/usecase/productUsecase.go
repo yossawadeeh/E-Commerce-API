@@ -5,7 +5,6 @@ import (
 	"e-commerce-api/domains"
 	"e-commerce-api/models"
 	"errors"
-	"fmt"
 )
 
 type productUsecase struct {
@@ -68,8 +67,6 @@ func (t *productUsecase) DeleteProduct(shopId uint, productId uint) (deletedId u
 	if product, err = t.productUsecase.GetProductById(productId); err != nil {
 		return id, errors.New(constant.ProductIdNotFound)
 	}
-
-	fmt.Println(product)
 
 	if id, err = t.productUsecase.DeleteProduct(product); err != nil {
 		return id, err

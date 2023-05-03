@@ -4,7 +4,6 @@ import (
 	"e-commerce-api/domains"
 	"e-commerce-api/models"
 	"e-commerce-api/utils"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -104,9 +103,6 @@ func (t *ProductHandler) DeleteProduct(c *gin.Context) {
 	shopId := c.MustGet("shop_id").(float64)
 	productIdParam := c.Param("productId")
 	productId, _ := strconv.Atoi(productIdParam)
-
-	fmt.Println("productIdParam: ", productIdParam)
-	fmt.Println("productId: ", productId)
 
 	var id uint
 	id, err := t.productUsecase.DeleteProduct(uint(shopId), uint(productId))
