@@ -24,6 +24,15 @@ func NewAuthUserHandler(usecase domains.AuthUserUsecase) *AuthUserHandler {
 	}
 }
 
+// RegisterEmployee godoc
+// @Summary Register Employee
+// @Tags    Employee Auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} utils.SuccessMessagePrototype
+// @Failure 404 {object} utils.ErrorMessagePrototype
+// @Param Body body models.Employee true "username, email, password, firstname, lastname, phone, shop_id, role_id"
+// @Router /v1/auth/employee/register [post]
 func (t *AuthUserHandler) RegisterEmployee(c *gin.Context) {
 	employeeReq := models.Employee{}
 	if err := c.Bind(&employeeReq); err != nil {
@@ -63,6 +72,15 @@ func (t *AuthUserHandler) RegisterEmployee(c *gin.Context) {
 	}))
 }
 
+// LoginEmployee godoc
+// @Summary Employee login
+// @Tags    Employee Auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} utils.SuccessMessagePrototype
+// @Failure 404 {object} utils.ErrorMessagePrototype
+// @Param Body body response.LoginEmployeeRequest  true "email, password"
+// @Router /v1/auth/employee/login [post]
 func (t *AuthUserHandler) LoginEmployee(c *gin.Context) {
 	loginData := response.LoginEmployeeRequest{}
 	if err := c.Bind(&loginData); err != nil {
@@ -95,6 +113,15 @@ func (t *AuthUserHandler) LoginEmployee(c *gin.Context) {
 	}))
 }
 
+// RegisterCustomer godoc
+// @Summary Customer register
+// @Tags    Customer Auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} utils.SuccessMessagePrototype
+// @Failure 404 {object} utils.ErrorMessagePrototype
+// @Param Body body models.Customer true "username, email, password, firstname, lastname, phone, age, birthday_text"
+// @Router /v1/auth/customer/register [post]
 func (t *AuthUserHandler) RegisterCustomer(c *gin.Context) {
 	customerReq := models.Customer{}
 	if err := c.Bind(&customerReq); err != nil {
@@ -135,6 +162,15 @@ func (t *AuthUserHandler) RegisterCustomer(c *gin.Context) {
 	}))
 }
 
+// LoginCustomer godoc
+// @Summary Customer login
+// @Tags    Customer Auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} utils.SuccessMessagePrototype
+// @Failure 404 {object} utils.ErrorMessagePrototype
+// @Param Body body response.LoginCustomerRequest  true "email, password"
+// @Router /v1/auth/customer/login [post]
 func (t *AuthUserHandler) LoginCustomer(c *gin.Context) {
 	loginData := response.LoginCustomerRequest{}
 	if err := c.Bind(&loginData); err != nil {

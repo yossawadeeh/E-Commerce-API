@@ -96,6 +96,19 @@ func (t *OrderHandler) GetOrderById(c *gin.Context) {
 	}))
 }
 
+// GetOrderByIdResponse godoc
+// @Summary Get order by id response
+// @Description Get order and order details by id
+// @Security 	bearer
+// @securityDefinitions.apikey bearer
+// @in 			header
+// @name Authorization
+// @Tags    [Shop] Order
+// @Produce json
+// @Param        orderId   path      uint  true  "Order ID"
+// @Success 200 {object} utils.SuccessMessagePrototype
+// @Failure 400 {object} utils.ErrorMessagePrototype
+// @Router /v1/shop/orders/{orderId} [get]
 func (t *OrderHandler) GetOrderByIdResponse(c *gin.Context) {
 	orderIdStr := c.Param("orderId")
 	orderId, _ := strconv.Atoi(orderIdStr)

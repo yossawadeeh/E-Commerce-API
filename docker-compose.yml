@@ -11,6 +11,8 @@ services:
   db:
     container_name: postgresdb_5432
     image: postgres
+    volumes:
+      - postgresdb_data:/var/lib/postgresql/data
     restart: always
     environment:
       POSTGRES_HOST: postgresdb_5432
@@ -35,3 +37,6 @@ services:
 
 networks:
   e-commerce-networks:
+
+volumes:
+  postgresdb_data:

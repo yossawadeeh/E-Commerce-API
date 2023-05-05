@@ -2,6 +2,7 @@ package main
 
 import (
 	"e-commerce-api/database"
+	"e-commerce-api/docs"
 	"e-commerce-api/models"
 	"e-commerce-api/routes"
 	"e-commerce-api/utils"
@@ -11,12 +12,15 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var runEnv string
 
 func init() {
 	fmt.Println("Hii 😊")
+	fmt.Println("Hii 🌲")
 
 	runEnv = os.Getenv("RUN_ENV")
 	if runEnv == "" {
@@ -30,7 +34,20 @@ func init() {
 	}
 }
 
+// @Security bearer
+// @securityDefinitions.apikey bearer
+// @in header
+// @name Authorization
+
 func main() {
+
+	docs.SwaggerInfo.Title = "Ecommerce API"
+	docs.SwaggerInfo.Description = "Ecommerce API with gin framework"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:8001"
+	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
 	app := gin.Default()
 
 	app.NoRoute(func(c *gin.Context) {
@@ -67,5 +84,7 @@ func main() {
 	routes.OrderRoute(v1)
 	routes.ProductRoute(v1)
 
+	// http://localhost:8001/swagger/index.html
+	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	app.Run(":8001")
 }

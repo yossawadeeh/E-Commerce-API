@@ -1,0 +1,262 @@
+definitions:
+  models.Customer:
+    properties:
+      age:
+        type: integer
+      birthday:
+        type: string
+      birthday_text:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      firstname:
+        type: string
+      id:
+        type: integer
+      lastname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Employee:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      firstname:
+        type: string
+      id:
+        type: integer
+      lastname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      role:
+        $ref: '#/definitions/models.Role'
+      role_id:
+        type: integer
+      shop_id:
+        type: integer
+      shop_owner:
+        $ref: '#/definitions/models.ShopOwner'
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Role:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      role_name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.ShopOwner:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  response.LoginCustomerRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  response.LoginEmployeeRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  utils.DataObject:
+    properties:
+      id:
+        type: integer
+      item: {}
+      items: {}
+      statusCode:
+        type: integer
+      total:
+        type: integer
+    type: object
+  utils.ErrorMessagePrototype:
+    properties:
+      apiVersion:
+        type: string
+      error:
+        $ref: '#/definitions/utils.errorObject'
+    type: object
+  utils.SuccessMessagePrototype:
+    properties:
+      apiVersion:
+        type: string
+      data:
+        $ref: '#/definitions/utils.DataObject'
+    type: object
+  utils.errorObject:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/auth/customer/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: email, password
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/response.LoginCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessMessagePrototype'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorMessagePrototype'
+      summary: Customer login
+      tags:
+      - Customer Auth
+  /v1/auth/customer/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: username, email, password, firstname, lastname, phone, age, birthday_text
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessMessagePrototype'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorMessagePrototype'
+      summary: Customer register
+      tags:
+      - Customer Auth
+  /v1/auth/employee/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: email, password
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/response.LoginEmployeeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessMessagePrototype'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorMessagePrototype'
+      summary: Employee login
+      tags:
+      - Employee Auth
+  /v1/auth/employee/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: username, email, password, firstname, lastname, phone, shop_id,
+          role_id
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Employee'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessMessagePrototype'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorMessagePrototype'
+      summary: Register Employee
+      tags:
+      - Employee Auth
+  /v1/shop/orders/{orderId}:
+    get:
+      description: Get order and order details by id
+      parameters:
+      - description: Order ID
+        in: path
+        name: orderId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessMessagePrototype'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorMessagePrototype'
+      security:
+      - bearer: []
+      summary: Get order by id response
+      tags:
+      - '[Shop] Order'
+securityDefinitions:
+  bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
