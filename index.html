@@ -38,27 +38,32 @@
       $("#but_upload").click(function () {
         var fd = new FormData();
         var files = $("#file")[0].files[0];
-        fd.append("myFile", files);
 
-        $.ajax({
-          url: "http://localhost:8001/v1/customer/upload",
-          type: "POST",
-          data: fd,
-          contentType: false,
-          processData: false,
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODM2MTY5NTAsImlkIjo4fQ.IiHapPjuWlENHAVT3BzJvvHWf2rT-UdjCIMxj6i46Xo",
-          },
-          success: function (response) {
-            if (response != 0) {
-              imgByte = response.data.item;
-              document.getElementById("myImg").src = "data:image/png;base64," + imgByte;
-            } else {
-              alert("file not uploaded");
-            }
-          },
-        });
+        if (files != undefined) {
+          fd.append("myFile", files);
+          $.ajax({
+            url: "http://localhost:8001/v1/customer/upload",
+            type: "POST",
+            data: fd,
+            contentType: false,
+            processData: false,
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODM2MTY5NTAsImlkIjo4fQ.IiHapPjuWlENHAVT3BzJvvHWf2rT-UdjCIMxj6i46Xo",
+            },
+            success: function (response) {
+              if (response != 0) {
+                imgByte = response.data.item;
+                document.getElementById("myImg").src =
+                  "data:image/png;base64," + imgByte;
+              } else {
+                alert("file not uploaded");
+              }
+            },
+          });
+        }else{
+            alert("Please select file.")
+        }
       });
     });
   </script>

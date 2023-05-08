@@ -76,7 +76,7 @@ func (t *customerRepository) UploadImagesProfile(id uint, req []byte) (err error
 func (t *customerRepository) GetImageProfileBytes(id uint) (res []byte, err error) {
 	var imgByte []byte
 	var cus models.Customer
-	if err = t.DB.Where("id = ?", id).Find(&cus).Error; err != nil {
+	if err = t.DB.Where("id = ?", id).First(&cus).Error; err != nil {
 		return nil, err
 	}
 
