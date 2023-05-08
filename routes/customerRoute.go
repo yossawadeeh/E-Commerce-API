@@ -28,4 +28,7 @@ func CustomerRoute(v1 *gin.RouterGroup) {
 	// Customer route
 	customerRoute := v1.Group("/customer", middleware.JWTAuthenCustomer())
 	customerRoute.POST("/address", customerUserHandler.CreateAddress)
+	customerRoute.POST("/upload", customerUserHandler.UploadImagesProfile)
+	customerRoute.GET("/profileImage", customerUserHandler.GetImageProfileBytes)
+
 }

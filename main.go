@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -49,6 +50,13 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	app := gin.Default()
+
+	//app.Use(cors.Default())
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE"}
+	config.AllowHeaders = []string{"*"}
+	app.Use(cors.New(config))
 
 	app.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, utils.ErrorMessage("Not Found Route", 404))

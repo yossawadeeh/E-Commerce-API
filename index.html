@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <form method="post" action="" enctype="multipart/form-data" id="myform">
+      <div>
+        <input type="file" id="file" name="file" />
+        <input type="button" class="button" value="Upload" id="but_upload" />
+      </div>
+    </form>
+    <image id="myImg" src=""></image>
+  </body>
+
+  <script>
+    jQuery.ajax({
+      url: "http://localhost:8001/v1/customer/profileImage",
+      type: "GET",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODM2MTY5NTAsImlkIjo4fQ.IiHapPjuWlENHAVT3BzJvvHWf2rT-UdjCIMxj6i46Xo",
+      },
+      success: function (result) {
+        imgByte = result.data.item;
+        document.getElementById("myImg").src =
+          "data:image/png;base64," + imgByte;
+      },
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $("#but_upload").click(function () {
+        var fd = new FormData();
+        var files = $("#file")[0].files[0];
+        fd.append("myFile", files);
+
+        $.ajax({
+          url: "http://localhost:8001/v1/customer/upload",
+          type: "POST",
+          data: fd,
+          contentType: false,
+          processData: false,
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODM2MTY5NTAsImlkIjo4fQ.IiHapPjuWlENHAVT3BzJvvHWf2rT-UdjCIMxj6i46Xo",
+          },
+          success: function (response) {
+            if (response != 0) {
+              imgByte = response.data.item;
+              document.getElementById("myImg").src = "data:image/png;base64," + imgByte;
+            } else {
+              alert("file not uploaded");
+            }
+          },
+        });
+      });
+    });
+  </script>
+</html>

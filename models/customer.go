@@ -17,6 +17,7 @@ type Customer struct {
 	Birthday     time.Time      `json:"birthday"`
 	BirthdayText string         `json:"birthday_text"`
 	Phone        string         `json:"phone"`
+	ImageProfile []byte         `gorm:"type:bytea" json:"image_profile"`
 	CreatedAt    time.Time      `gorm:"default:now()" json:"createdAt"`
 	UpdatedAt    time.Time      `gorm:"default:now()" json:"updatedAt"`
 	DeletedAt    gorm.DeletedAt `json:"-"`

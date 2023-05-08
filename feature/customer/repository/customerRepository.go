@@ -65,3 +65,21 @@ func (t *customerRepository) CreateAddress(req *models.Address) (err error) {
 	}
 	return nil
 }
+
+func (t *customerRepository) UploadImagesProfile(id uint, req []byte) (err error) {
+	if err = t.DB.Model(&models.Customer{}).Where("id = ?", id).Update("image_profile", req).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *customerRepository) GetImageProfileBytes(id uint) (res []byte, err error) {
+	var imgByte []byte
+	var cus models.Customer
+	if err = t.DB.Where("id = ?", id).Find(&cus).Error; err != nil {
+		return nil, err
+	}
+
+	imgByte = cus.ImageProfile
+	return imgByte, err
+}

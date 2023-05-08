@@ -68,3 +68,15 @@ func (t *customerUsecase) CreateAddress(req *models.Address) (err error) {
 	}
 	return nil
 }
+
+func (t *customerUsecase) UploadImagesProfile(id uint, req []byte) (err error) {
+	if err := t.customerRepo.UploadImagesProfile(id, req); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *customerUsecase) GetImageProfileBytes(id uint) (res []byte, err error) {
+	imgBytes, err := t.customerRepo.GetImageProfileBytes(id)
+	return imgBytes, err
+}

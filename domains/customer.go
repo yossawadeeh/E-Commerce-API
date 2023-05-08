@@ -13,6 +13,8 @@ type CustomerRepository interface {
 	UpdateCarts(req models.Cart) (res *response.AddToCartResponse, err error)
 	DeleteProductFromCarts(customerId uint, req response.ProductIdRequest) (err error)
 	CreateAddress(req *models.Address) (err error)
+	UploadImagesProfile(id uint, req []byte) (err error)
+	GetImageProfileBytes(id uint) (res []byte, err error)
 }
 
 // Usecase
@@ -23,4 +25,6 @@ type CustomerUsecase interface {
 	UpdateCarts(req models.Cart) (res *response.AddToCartResponse, err error)
 	DeleteProductFromCarts(customerId uint, req response.ProductIdRequest) (err error)
 	CreateAddress(req *models.Address) (err error)
+	UploadImagesProfile(id uint, req []byte) (err error)
+	GetImageProfileBytes(id uint) (res []byte, err error)
 }
