@@ -1,7 +1,7 @@
 package constant
 
 const (
-	// Duplicate
+	// Duplicate..
 	EmailDuplicate      string = "Duplicate email"
 	UsernameDuplicate   string = "Duplicate username"
 	DupicateProductName string = "Duplicate product name"
