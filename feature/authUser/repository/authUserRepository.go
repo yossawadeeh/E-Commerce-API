@@ -34,13 +34,25 @@ func (t *authUserRepository) CheckUsernameEmployeeIsExist(username string) (isEx
 	return exists, nil
 }
 
-func (t *authUserRepository) CreateEmployee(req *models.Employee) (res *response.EmployeeProfileResponse, err error) {
+func (t *authUserRepository) CreateEmployee(req *response.RegisterEmployeeRequest) (res *response.EmployeeProfileResponse, err error) {
 	var resEmp *response.EmployeeProfileResponse
-	if err := t.DB.Create(&req).Error; err != nil {
+
+	newEmployee := models.Employee{
+		Email:       req.Email,
+		Username:    req.Username,
+		FirstName:   req.Firstname,
+		LastName:    req.Lastname,
+		Password:    req.Password,
+		Phone:       req.Phone,
+		RoleId:      req.RoleId,
+		ShopOwnerId: req.ShopOwnerId,
+	}
+
+	if err := t.DB.Create(&newEmployee).Error; err != nil {
 		return nil, err
 	}
 
-	if err := t.DB.Model(&models.Employee{}).Where("id = ?", req.ID).First(&resEmp).Error; err != nil {
+	if err := t.DB.Model(&models.Employee{}).Where("id = ?", newEmployee.ID).First(&resEmp).Error; err != nil {
 		return nil, err
 	}
 	return resEmp, nil
@@ -64,13 +76,26 @@ func (t *authUserRepository) CheckUsernameCustomerIsExist(username string) (isEx
 	return exists, nil
 }
 
-func (t *authUserRepository) CreateCustomer(req models.Customer) (res *response.CustomerProfileResponse, err error) {
+func (t *authUserRepository) CreateCustomer(req response.RegisterCustomerRequest) (res *response.CustomerProfileResponse, err error) {
 	var customer *response.CustomerProfileResponse
-	if err := t.DB.Create(&req).Error; err != nil {
+
+	newCustomer := models.Customer{
+		Email:        req.Email,
+		Username:     req.Username,
+		FirstName:    req.Firstname,
+		LastName:     req.Lastname,
+		Password:     req.Password,
+		Phone:        req.Phone,
+		Age:          req.Age,
+		Birthday:     req.Birthday,
+		BirthdayText: req.BirthdayText,
+	}
+
+	if err := t.DB.Create(&newCustomer).Error; err != nil {
 		return nil, err
 	}
 
-	err = t.DB.Model(&models.Customer{}).Where("id = ?", req.ID).First(&customer).Error
+	err = t.DB.Model(&models.Customer{}).Where("id = ?", newCustomer.ID).First(&customer).Error
 
 	return customer, err
 }

@@ -1,84 +1,4 @@
 definitions:
-  models.Customer:
-    properties:
-      age:
-        type: integer
-      birthday:
-        type: string
-      birthday_text:
-        type: string
-      createdAt:
-        type: string
-      email:
-        type: string
-      firstname:
-        type: string
-      id:
-        type: integer
-      lastname:
-        type: string
-      password:
-        type: string
-      phone:
-        type: string
-      updatedAt:
-        type: string
-      username:
-        type: string
-    type: object
-  models.Employee:
-    properties:
-      createdAt:
-        type: string
-      email:
-        type: string
-      firstname:
-        type: string
-      id:
-        type: integer
-      lastname:
-        type: string
-      password:
-        type: string
-      phone:
-        type: string
-      role:
-        $ref: '#/definitions/models.Role'
-      role_id:
-        type: integer
-      shop_id:
-        type: integer
-      shop_owner:
-        $ref: '#/definitions/models.ShopOwner'
-      updatedAt:
-        type: string
-      username:
-        type: string
-    type: object
-  models.Role:
-    properties:
-      createdAt:
-        type: string
-      id:
-        type: integer
-      role_name:
-        type: string
-      updatedAt:
-        type: string
-    type: object
-  models.ShopOwner:
-    properties:
-      createdAt:
-        type: string
-      description:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-      updatedAt:
-        type: string
-    type: object
   response.LoginCustomerRequest:
     properties:
       email:
@@ -91,6 +11,44 @@ definitions:
       email:
         type: string
       password:
+        type: string
+    type: object
+  response.RegisterCustomerRequest:
+    properties:
+      age:
+        type: integer
+      birthday_text:
+        type: string
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  response.RegisterEmployeeRequest:
+    properties:
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      role_id:
+        type: integer
+      shop_id:
+        type: integer
+      username:
         type: string
     type: object
   utils.DataObject:
@@ -158,12 +116,12 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: username, email, password, firstname, lastname, phone, age, birthday_text
+      - description: username, email, password, firstname, lastname, phone, birthday_text
         in: body
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/models.Customer'
+          $ref: '#/definitions/response.RegisterCustomerRequest'
       produces:
       - application/json
       responses:
@@ -214,7 +172,7 @@ paths:
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/models.Employee'
+          $ref: '#/definitions/response.RegisterEmployeeRequest'
       produces:
       - application/json
       responses:

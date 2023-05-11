@@ -4,7 +4,6 @@ import (
 	"e-commerce-api/constant"
 	"e-commerce-api/domains"
 	"e-commerce-api/domains/response"
-	"e-commerce-api/models"
 	"e-commerce-api/utils"
 	"net/http"
 	"time"
@@ -31,10 +30,10 @@ func NewAuthUserHandler(usecase domains.AuthUserUsecase) *AuthUserHandler {
 // @Produce  json
 // @Success 200 {object} utils.SuccessMessagePrototype
 // @Failure 404 {object} utils.ErrorMessagePrototype
-// @Param Body body models.Employee true "username, email, password, firstname, lastname, phone, shop_id, role_id"
+// @Param Body body response.RegisterEmployeeRequest true "username, email, password, firstname, lastname, phone, shop_id, role_id"
 // @Router /v1/auth/employee/register [post]
 func (t *AuthUserHandler) RegisterEmployee(c *gin.Context) {
-	employeeReq := models.Employee{}
+	employeeReq := response.RegisterEmployeeRequest{}
 	if err := c.Bind(&employeeReq); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
 		return
@@ -120,10 +119,10 @@ func (t *AuthUserHandler) LoginEmployee(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} utils.SuccessMessagePrototype
 // @Failure 404 {object} utils.ErrorMessagePrototype
-// @Param Body body models.Customer true "username, email, password, firstname, lastname, phone, age, birthday_text"
+// @Param Body body response.RegisterCustomerRequest true "username, email, password, firstname, lastname, phone, birthday_text"
 // @Router /v1/auth/customer/register [post]
 func (t *AuthUserHandler) RegisterCustomer(c *gin.Context) {
-	customerReq := models.Customer{}
+	customerReq := response.RegisterCustomerRequest{}
 	if err := c.Bind(&customerReq); err != nil {
 		c.JSON(http.StatusBadRequest, utils.ErrorMessage(err.Error(), http.StatusBadRequest))
 		return

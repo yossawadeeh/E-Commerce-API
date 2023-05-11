@@ -29,7 +29,7 @@ func NewAuthUserUsecase(authRepo domains.AuthUserRepository, shopRepo domains.Sh
 	}
 }
 
-func (t *authUserUsecase) CreateEmployee(req *models.Employee) (res *response.EmployeeProfileResponse, err error) {
+func (t *authUserUsecase) CreateEmployee(req *response.RegisterEmployeeRequest) (res *response.EmployeeProfileResponse, err error) {
 	emailIsExist, err := t.authUserRepo.CheckEmailEmployeeIsExist(req.Email)
 	if emailIsExist == true {
 		return nil, errors.New(constant.EmailDuplicate)
@@ -78,7 +78,7 @@ func (t authUserUsecase) EmployeeLogin(loginData response.LoginEmployeeRequest) 
 	return &tokenString, err
 }
 
-func (t *authUserUsecase) CreateCustomer(req models.Customer) (res *response.CustomerProfileResponse, err error) {
+func (t *authUserUsecase) CreateCustomer(req response.RegisterCustomerRequest) (res *response.CustomerProfileResponse, err error) {
 	emailIsExist, err := t.authUserRepo.CheckEmailCustomerIsExist(req.Email)
 	if emailIsExist == true {
 		return nil, errors.New(constant.EmailDuplicate)
